@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healmind: Presentación para Inversores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Tech -->
+    <!-- Application Structure Plan: He diseñado una aplicación de una sola página con una barra de navegación fija para facilitar la exploración no lineal. La estructura sigue una narrativa lógica para un inversor: comienza con el panorama general (Oportunidad y Problema), presenta la Solución, detalla el Modelo de Negocio y la Tracción, visualiza el potencial con Proyecciones interactivas, y finaliza con el Equipo y el Uso de Capital. Esta estructura, en lugar de replicar las diapositivas, agrupa conceptos para crear un flujo de información más coherente y persuasivo, permitiendo al inversor profundizar en las áreas de mayor interés a través de la interacción. -->
+    <!-- Visualization & Content Choices: 1. Mercado de Profesionales (EEUU): Objetivo: Comparar. Visualización: Gráfico de barras (Chart.js). Interacción: Hover para ver cifras exactas. Justificación: Muestra la escala del mercado de forma más impactante que una lista. 2. ROI del Terapeuta: Objetivo: Informar/Enganchar. Método: Calculadora interactiva (HTML/JS). Interacción: El usuario introduce el número de terapeutas para ver el ahorro. Justificación: Hace tangible y creíble la propuesta de valor. 3. Proyecciones Financieras: Objetivo: Explorar el cambio. Visualización: Gráfico de barras con control deslizante (Chart.js/JS). Interacción: Ajustar la penetración de mercado para ver el cambio en ingresos. Justificación: Demuestra la escalabilidad del modelo y permite al inversor probar escenarios. 4. Uso del Capital: Objetivo: Mostrar Proporciones. Visualización: Gráfico de anillos (Chart.js). Interacción: Hover en los segmentos. Justificación: Ofrece un desglose visual y rápido del destino de la financiación. 5. Plan de Crecimiento Anual: Objetivo: Presentar un plan concreto. Método: Tabla y gráfico de líneas (Chart.js). Interacción: Muestra la progresión anual de clientes e ingresos. Justificación: Proporciona una hoja de ruta detallada que demuestra la ejecución y el potencial de crecimiento a largo plazo. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #6d28d9;
+        }
+        .section-title {
+            color: #374151;
+            font-weight: 700;
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            max-width: 48rem;
+            margin: 0.5rem auto 0 auto;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <nav id="navbar" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-2xl text-purple-700">Healmind</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#oportunidad" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Oportunidad</a>
+                        <a href="#solucion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Solución</a>
+                        <a href="#modelo" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Modelo de Negocio</a>
+                        <a href="#traccion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Tracción</a>
+                        <a href="#proyecciones" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Proyecciones</a>
+                        <a href="#plan-crecimiento" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Plan de Crecimiento</a>
+                        <a href="#equipo" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Equipo</a>
+                    </div>
+                </div>
+                <button id="language-toggle" class="bg-purple-500 text-white font-bold py-2 px-4 rounded-full">
+                    EN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <header id="header" class="bg-white">
+            <div class="max-w-7xl mx-auto py-20 px-4 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-purple-800 tracking-tight">
+                    Revolucionamos la Salud Mental con Inteligencia Artificial
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    Healmind es la plataforma que potencia la psicología clínica, llevando la terapia más allá de la narrativa en consulta a través de datos objetivos y un seguimiento inteligente.
+                </p>
+            </div>
+        </header>
+
+        <section id="oportunidad" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Una Oportunidad de Mercado Masiva</h2>
+                <p class="section-subtitle">El sector de la salud mental está en un punto de inflexión. La tecnología actual permite una transformación digital que los profesionales y pacientes necesitan urgentemente.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">El Problema: Una Práctica Anclada en el Pasado</h3>
+                         <div class="space-y-4 text-left">
+                            <div class="stat-card">
+                                <h4 class="font-semibold text-purple-700">Subjetividad Exclusiva</h4>
+                                <p class="text-gray-600">La terapia se basa casi por completo en la narrativa del paciente durante la sesión, limitando la objetividad.</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4 class="font-semibold text-purple-700">Herramientas Obsoletas</h4>
+                                <p class="text-gray-600">Muchos profesionales aún dependen del "boli y papel", un método ineficiente en la era digital.</p>
+                            </div>
+                             <div class="stat-card">
+                                <h4 class="font-semibold text-purple-700">Falta de Continuidad</h4>
+                                <p class="text-gray-600">No existe un acompañamiento real y basado en datos entre una sesión y la siguiente.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Mercado de Profesionales en EE.UU.</h3>
+                        <div class="chart-container">
+                            <canvas id="marketChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-gray-600">Un mercado total que supera el millón de profesionales esperando una solución digital.</p>
+                    </div>
+                </div>
+                 <div class="mt-16">
+                    <div class="stat-card max-w-2xl mx-auto">
+                         <p class="text-2xl font-bold text-purple-800">$656.13 Mil Millones</p>
+                         <p class="text-gray-600 mt-1">Mercado proyectado para la terapia conductual en 2033 (Custom Market Insights).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solucion" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Nuestra Solución: Digitalización Ética e Inteligente</h2>
+                <p class="section-subtitle">Healmind no busca sustituir al terapeuta, sino potenciar su trabajo con herramientas de IA que mejoran la evaluación, el seguimiento y el análisis funcional.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="stat-card text-center">
+                        <div class="text-4xl text-purple-600 mb-3">📊</div>
+                        <h3 class="text-xl font-semibold">Evaluación Basada en Datos</h3>
+                        <p class="text-gray-600 mt-2">Recopilamos información objetiva entre sesiones para un diagnóstico y seguimiento más preciso.</p>
+                    </div>
+                    <div class="stat-card text-center">
+                        <div class="text-4xl text-purple-600 mb-3">🧠</div>
+                        <h3 class="text-xl font-semibold">Análisis con IA</h3>
+                        <p class="text-gray-600 mt-2">Nuestros algoritmos identifican patrones de conducta y emocionales, ofreciendo insights valiosos al terapeuta.</p>
+                    </div>
+                    <div class="stat-card text-center">
+                        <div class="text-4xl text-purple-600 mb-3">🚀</div>
+                        <h3 class="text-xl font-semibold">Visión de Futuro Predictiva</h3>
+                        <p class="text-600 mt-2">Aspiramos a anticipar necesidades y entregar el apoyo justo en el momento preciso, integrando la terapia en el día a día del paciente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="modelo" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Modelo de Negocio y un ROI Claro</h2>
+                <p class="section-subtitle">Ofrecemos un modelo de suscripción B2B escalable, diseñado para clínicas y profesionales, con un retorno de la inversión directo y medible.</p>
+                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="text-left space-y-4">
+                        <div class="stat-card">
+                            <h3 class="text-xl font-semibold text-purple-700">Suscripción B2B Mensual</h3>
+                            <p class="text-gray-600 mt-1">El precio se basa en el número de terapeutas, con planes que se ajustan al tamaño de cada centro.</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="text-xl font-semibold text-purple-700">Ahorro de Tiempo y Dinero</h3>
+                             <p class="text-gray-600 mt-1">Automatizamos tareas como transcripciones, facturación y análisis de diarios, ahorrando un promedio de <span class="font-bold">95 minutos diarios</span> por terapeuta.</p>
+                        </div>
+                    </div>
+                    <div class="stat-card p-8">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Calculadora de ROI</h3>
+                        <p class="text-gray-600 mb-4">Introduce el número de terapeutas de un centro para estimar el ahorro mensual.</p>
+                        <div class="flex items-center space-x-4">
+                            <label for="therapists" class="font-medium">Nº de Terapeutas:</label>
+                            <input type="number" id="therapists" value="10" min="1" class="w-24 text-center border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500">
+                        </div>
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-600">Ahorro mensual estimado:</p>
+                            <p id="roiResult" class="text-4xl font-extrabold text-purple-800">$28,500</p>
+                            <p class="text-gray-500 mt-1">Con un ROI de 28.7x por terapeuta.</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="traccion" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Tracción y Estrategia de Expansión</h2>
+                <p class="section-subtitle">Hemos validado nuestro modelo en España y tenemos una estrategia clara y sólida para abordar el mercado de EE.UU.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="stat-card">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Tracción en España 🇪🇸</h3>
+                        <ul class="space-y-3 list-disc list-inside text-gray-600">
+                            <li><span class="font-semibold">Contrato de exclusividad</span> con una clínica que abrirá 28 centros en dos años (16.500€ anuales).</li>
+                            <li><span class="font-semibold">Más de 100 psicólogos autónomos</span> ya usan Healmind.</li>
+                            <li><span class="font-semibold">Más de 600 pacientes</span> activos en la aplicación, validando el producto.</li>
+                        </ul>
+                    </div>
+                     <div class="stat-card">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Expansión a EE.UU. 🇺🇸</h3>
+                        <p class="text-gray-600 mb-4">Hemos creado una nueva entidad, <span class="font-semibold">NewCo</span>, a través de una asociación estratégica y exclusiva para comercializar la plataforma en el mercado estadounidense.</p>
+                        <div class="flex justify-around items-center bg-gray-50 p-4 rounded-lg">
+                             <div class="text-center">
+                                <p class="text-3xl font-bold text-purple-700">67%</p>
+                                <p class="text-sm text-gray-500">Propiedad de Healmind</p>
+                            </div>
+                            <div class="text-2xl font-light text-gray-400">+</div>
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-purple-700">33%</p>
+                                <p class="text-sm text-gray-500">Socio Estratégico USA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proyecciones" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Proyecciones Financieras Interactivas</h2>
+                <p class="section-subtitle">Nuestras proyecciones se basan en una penetración de mercado conservadora y una tarifa promedio de $80 USD. Utiliza el control deslizante para explorar diferentes escenarios.</p>
+                 <div class="mt-12">
+                    <div class="max-w-3xl mx-auto">
+                        <label for="penetration" class="font-medium">Penetración de Mercado: <span id="penetrationValue" class="font-bold text-purple-700">15</span>%</label>
+                        <input type="range" id="penetration" min="1" max="50" value="15" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div class="chart-container mt-8" style="height:400px; max-height: 450px;">
+                        <canvas id="financialsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="plan-crecimiento" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Plan de Crecimiento Financiero Anual</h2>
+                <p class="section-subtitle">Este plan detalla nuestros objetivos de crecimiento de clientes e ingresos, proporcionando una hoja de ruta clara para el éxito.</p>
+                <div class="mt-12 overflow-x-auto">
+                    <table class="w-full min-w-[700px] bg-white rounded-lg shadow-md overflow-hidden">
+                        <thead class="bg-purple-100 text-purple-800">
+                            <tr>
+                                <th class="p-4 text-left font-semibold">Métrica</th>
+                                <th class="p-4 font-semibold text-center">Año 1</th>
+                                <th class="p-4 font-semibold text-center">Año 2</th>
+                                <th class="p-4 font-semibold text-center">Año 3</th>
+                                <th class="p-4 font-semibold text-center">Año 4</th>
+                                <th class="p-4 font-semibold text-center">Año 5</th>
+                            </tr>
+                        </thead>
+                        <tbody id="financialsTableBody" class="text-gray-700 divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container mt-12" style="height: 400px; max-height: 450px;">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="equipo" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Un Equipo para Ganar</h2>
+                <p class="section-subtitle">Healmind cuenta con un equipo completo y diverso, formado por líderes con experiencia ejecutiva, asesores estratégicos y socios tecnológicos clave.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="stat-card text-center p-8">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Equipo Ejecutivo</h3>
+                        <p class="text-gray-600 mb-6">Líderes con experiencia en la ejecución de la visión de la empresa.</p>
+                        <div class="space-y-6">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-purple-200 rounded-full mx-auto mb-2 flex items-center justify-center text-purple-600 font-bold">CA</div>
+                                <h4 class="font-bold">Catalina Ayuso</h4>
+                                <p class="text-sm text-gray-500">CEO Fundadora</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-gray-600 font-bold">DG</div>
+                                <h4 class="font-bold">Daniela Guardarrama</h4>
+                                <p class="text-sm text-gray-500">Marketing</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-gray-600 font-bold">TC</div>
+                                <h4 class="font-bold">Teo Cuenca</h4>
+                                <p class="text-sm text-gray-500">Sales</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-gray-600 font-bold">DA</div>
+                                <h4 class="font-bold">Diego Arteaga</h4>
+                                <p class="text-sm text-gray-500">Customer Relations</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card text-center p-8">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Equipo No Ejecutivo</h3>
+                         <p class="text-gray-600 mb-6">Asesores con experiencia y conocimiento estratégico del mercado.</p>
+                        <div class="space-y-6">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-purple-200 rounded-full mx-auto mb-2 flex items-center justify-center text-purple-600 font-bold">JAD</div>
+                                <h4 class="font-bold">Joaquin Ayuso de Paul</h4>
+                                <p class="text-sm text-gray-500">Non Executive Advisor</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-purple-200 rounded-full mx-auto mb-2 flex items-center justify-center text-purple-600 font-bold">JAG</div>
+                                <h4 class="font-bold">Joaquin Ayuso Garcia</h4>
+                                <p class="text-sm text-gray-500">Non Executive Advisor</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-gray-600 font-bold">RS</div>
+                                <h4 class="font-bold">Rafael Sarandeses</h4>
+                                <p class="text-sm text-gray-500">Non Executive Advisor</p>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="stat-card text-center p-8">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Socios Estratégicos</h3>
+                        <p class="text-gray-600 mb-6">Alianzas clave que fortalecen nuestra tecnología y expansión.</p>
+                        <div class="space-y-6">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-purple-200 rounded-full mx-auto mb-2 flex items-center justify-center text-purple-600 font-bold">ST</div>
+                                <h4 class="font-bold">Socio Tech</h4>
+                                <p class="text-sm text-gray-500">Socio Estratégico, CTO</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-gray-600 font-bold">SA</div>
+                                <h4 class="font-bold">Socio Americano</h4>
+                                <p class="text-sm text-gray-500">Expansión en EE.UU.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-16">
+                     <h3 class="text-2xl font-bold text-gray-700 mb-4">Uso del Capital</h3>
+                     <p class="section-subtitle">Buscamos capital para acelerar nuestra expansión y consolidar nuestra ventaja tecnológica.</p>
+                     <div class="chart-container mx-auto mt-8" style="height:300px; max-height:350px;">
+                        <canvas id="capitalUseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold">Únete a la Revolución de la Salud Mental</h2>
+            <p class="mt-4">Healmind es más que una plataforma; es el futuro de la psicología clínica.</p>
+            <div class="mt-8">
+                <a href="mailto:Catalina.ayuso@healmind.care" class="inline-block bg-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-700 transition">Contactar</a>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const content = {
+        es: {
+            nav: ["Oportunidad", "Solución", "Modelo de Negocio", "Tracción", "Proyecciones", "Plan de Crecimiento", "Equipo"],
+            header: {
+                title: "Revolucionamos la Salud Mental con Inteligencia Artificial",
+                subtitle: "Healmind es la plataforma que potencia la psicología clínica, llevando la terapia más allá de la narrativa en consulta a través de datos objetivos y un seguimiento inteligente."
+            },
+            oportunidad: {
+                title: "Una Oportunidad de Mercado Masiva",
+                subtitle: "El sector de la salud mental está en un punto de inflexión. La tecnología actual permite una transformación digital que los profesionales y pacientes necesitan urgentemente.",
+                problemTitle: "El Problema: Una Práctica Anclada en el Pasado",
+                subjetividad: {
+                    title: "Subjetividad Exclusiva",
+                    text: "La terapia se basa casi por completo en la narrativa del paciente durante la sesión, limitando la objetividad."
+                },
+                obsoletas: {
+                    title: "Herramientas Obsoletas",
+                    text: "Muchos profesionales aún dependen del \"boli y papel\", un método ineficiente en la era digital."
+                },
+                continuidad: {
+                    title: "Falta de Continuidad",
+                    text: "No existe un acompañamiento real y basado en datos entre una sesión y la siguiente."
+                },
+                marketTitle: "Mercado de Profesionales en EE.UU.",
+                marketText: "Un mercado total que supera el millón de profesionales esperando una solución digital.",
+                marketProj: "Mercado proyectado para la terapia conductual en 2033 (Custom Market Insights).",
+                marketChartLabels: ['Psiquiatras', 'Psicólogos', 'Terapeutas de Salud Mental']
+            },
+            solucion: {
+                title: "Nuestra Solución: Digitalización Ética e Inteligente",
+                subtitle: "Healmind no busca sustituir al terapeuta, sino potenciar su trabajo con herramientas de IA que mejoran la evaluación, el seguimiento y el análisis funcional.",
+                evaluacion: {
+                    title: "Evaluación Basada en Datos",
+                    text: "Recopilamos información objetiva entre sesiones para un diagnóstico y seguimiento más preciso."
+                },
+                analisis: {
+                    title: "Análisis con IA",
+                    text: "Nuestros algoritmos identifican patrones de conducta y emocionales, ofreciendo insights valiosos al terapeuta."
+                },
+                vision: {
+                    title: "Visión de Futuro Predictiva",
+                    text: "Aspiramos a anticipar necesidades y entregar el apoyo justo en el momento preciso, integrando la terapia en el día a día del paciente."
+                }
+            },
+            modelo: {
+                title: "Modelo de Negocio y un ROI Claro",
+                subtitle: "Ofrecemos un modelo de suscripción B2B escalable, diseñado para clínicas y profesionales, con un retorno de la inversión directo y medible.",
+                suscripcion: {
+                    title: "Suscripción B2B Mensual",
+                    text: "El precio se basa en el número de terapeutas, con planes que se ajustan al tamaño de cada centro."
+                },
+                ahorro: {
+                    title: "Ahorro de Tiempo y Dinero",
+                    text: "Automatizamos tareas como transcripciones, facturación y análisis de diarios, ahorrando un promedio de <span class='font-bold'>95 minutos diarios</span> por terapeuta."
+                },
+                calculadoraTitle: "Calculadora de ROI",
+                calculadoraText: "Introduce el número de terapeutas de un centro para estimar el ahorro mensual.",
+                labelTherapists: "Nº de Terapeutas:",
+                labelSavings: "Ahorro mensual estimado:",
+                labelROI: "Con un ROI de 28.7x por terapeuta."
+            },
+            traccion: {
+                title: "Tracción y Estrategia de Expansión",
+                subtitle: "Hemos validado nuestro modelo en España y tenemos una estrategia clara y sólida para abordar el mercado de EE.UU.",
+                espaniaTitle: "Tracción en España 🇪🇸",
+                espaniaList: [
+                    "<span class='font-semibold'>Contrato de exclusividad</span> con una clínica que abrirá 28 centros en dos años (16.500€ anuales).",
+                    "<span class='font-semibold'>Más de 100 psicólogos autónomos</span> ya usan Healmind.",
+                    "<span class='font-semibold'>Más de 600 pacientes</span> activos en la aplicación, validando el producto."
+                ],
+                usaTitle: "Expansión a EE.UU. 🇺🇸",
+                usaText: "Hemos creado una nueva entidad, <span class='font-semibold'>NewCo</span>, a través de una asociación estratégica y exclusiva para comercializar la plataforma en el mercado estadounidense.",
+                usaPropiedad: "Propiedad de Healmind",
+                usaSocio: "Socio Estratégico USA"
+            },
+            proyecciones: {
+                title: "Proyecciones Financieras Interactivas",
+                subtitle: "Nuestras proyecciones se basan en una penetración de mercado conservadora y una tarifa promedio de $80 USD. Utiliza el control deslizante para explorar diferentes escenarios.",
+                labelPenetration: "Penetración de Mercado:"
+            },
+            crecimiento: {
+                title: "Plan de Crecimiento Financiero Anual",
+                subtitle: "Este plan detalla nuestros objetivos de crecimiento de clientes e ingresos, proporcionando una hoja de ruta clara para el éxito.",
+                tableHeaders: ["Métrica", "Año 1", "Año 2", "Año 3", "Año 4", "Año 5"],
+                tableRowClients: "Clientes totales",
+                tableRowRevenue: "Ingresos anuales",
+                chartLabelRevenue: "Ingresos Anuales ($)",
+                chartLabelClients: "Total de Clientes",
+                chartTitle: "Clientes / Ingresos"
+            },
+            equipo: {
+                title: "Un Equipo para Ganar",
+                subtitle: "Healmind cuenta con un equipo completo y diverso, formado por líderes con experiencia ejecutiva, asesores estratégicos y socios tecnológicos clave.",
+                ejecutivo: {
+                    title: "Equipo Ejecutivo",
+                    text: "Líderes con experiencia en la ejecución de la visión de la empresa.",
+                    members: [
+                        { name: "Catalina Ayuso", role: "CEO Fundadora" },
+                        { name: "Daniela Guardarrama", role: "Marketing" },
+                        { name: "Teo Cuenca", role: "Sales" },
+                        { name: "Diego Arteaga", role: "Customer Relations" }
+                    ]
+                },
+                noEjecutivo: {
+                    title: "Equipo No Ejecutivo",
+                    text: "Asesores con experiencia y conocimiento estratégico del mercado.",
+                    members: [
+                        { name: "Joaquin Ayuso de Paul", role: "Non Executive Advisor" },
+                        { name: "Joaquin Ayuso Garcia", role: "Non Executive Advisor" },
+                        { name: "Rafael Sarandeses", role: "Non Executive Advisor" }
+                    ]
+                },
+                socios: {
+                    title: "Socios Estratégicos",
+                    text: "Alianzas clave que fortalecen nuestra tecnología y expansión.",
+                    members: [
+                        { name: "Socio Tech", role: "Socio Estratégico, CTO" },
+                        { name: "Socio Americano", role: "Expansión en EE.UU." }
+                    ]
+                },
+                capitalTitle: "Uso del Capital",
+                capitalSubtitle: "Buscamos capital para acelerar nuestra expansión y consolidar nuestra ventaja tecnológica.",
+                capitalLabels: ['Equipo Tech para USA', 'Sofisticación de la IA', 'Roadmap Tecnológico', 'Ventas en España']
+            },
+            footer: {
+                title: "Únete a la Revolución de la Salud Mental",
+                text: "Healmind es más que una plataforma; es el futuro de la psicología clínica.",
+                button: "Contactar"
+            }
+        },
+        en: {
+            nav: ["Opportunity", "Solution", "Business Model", "Traction", "Projections", "Growth Plan", "Team"],
+            header: {
+                title: "Revolutionizing Mental Health with Artificial Intelligence",
+                subtitle: "Healmind is the platform that empowers clinical psychology, taking therapy beyond the consultation narrative through objective data and smart tracking."
+            },
+            oportunidad: {
+                title: "A Massive Market Opportunity",
+                subtitle: "The mental health sector is at a tipping point. Current technology enables a digital transformation that professionals and patients urgently need.",
+                problemTitle: "The Problem: A Practice Stuck in the Past",
+                subjetividad: {
+                    title: "Exclusive Subjectivity",
+                    text: "Therapy is based almost entirely on the patient's narrative during the session, limiting objectivity."
+                },
+                obsoletas: {
+                    title: "Outdated Tools",
+                    text: "Many professionals still rely on 'pen and paper,' an inefficient method in the digital age."
+                },
+                continuidad: {
+                    title: "Lack of Continuity",
+                    text: "There is no real, data-driven follow-up between sessions."
+                },
+                marketTitle: "Market of Professionals in the US",
+                marketText: "A total market of over a million professionals waiting for a digital solution.",
+                marketProj: "Projected market for behavioral therapy in 2033 (Custom Market Insights).",
+                marketChartLabels: ['Psychiatrists', 'Psychologists', 'Mental Health Therapists']
+            },
+            solucion: {
+                title: "Our Solution: Ethical and Intelligent Digitization",
+                subtitle: "Healmind does not seek to replace the therapist, but to empower their work with AI tools that improve assessment, tracking, and functional analysis.",
+                evaluacion: {
+                    title: "Data-Driven Assessment",
+                    text: "We collect objective information between sessions for a more precise diagnosis and follow-up."
+                },
+                analisis: {
+                    title: "AI-Powered Analysis",
+                    text: "Our algorithms identify behavioral and emotional patterns, offering valuable insights to the therapist."
+                },
+                vision: {
+                    title: "Predictive Future Vision",
+                    text: "We aim to anticipate needs and deliver the right support at the precise moment, integrating therapy into the patient's daily life."
+                }
+            },
+            modelo: {
+                title: "Business Model and a Clear ROI",
+                subtitle: "We offer a scalable B2B subscription model, designed for clinics and professionals, with a direct and measurable return on investment.",
+                suscripcion: {
+                    title: "Monthly B2B Subscription",
+                    text: "Pricing is based on the number of therapists, with plans that adjust to the size of each center."
+                },
+                ahorro: {
+                    title: "Time and Money Savings",
+                    text: "We automate tasks such as transcriptions, billing, and journal analysis, saving an average of <span class='font-bold'>95 minutes daily</span> per therapist."
+                },
+                calculadoraTitle: "ROI Calculator",
+                calculadoraText: "Enter the number of therapists in a center to estimate the monthly savings.",
+                labelTherapists: "No. of Therapists:",
+                labelSavings: "Estimated monthly savings:",
+                labelROI: "With a 28.7x ROI per therapist."
+            },
+            traccion: {
+                title: "Traction and Expansion Strategy",
+                subtitle: "We have validated our model in Spain and have a clear and solid strategy to address the US market.",
+                espaniaTitle: "Traction in Spain 🇪🇸",
+                espaniaList: [
+                    "<span class='font-semibold'>Exclusivity contract</span> with a clinic that will open 28 centers in two years (€16,500 annually).",
+                    "<span class='font-semibold'>Over 100 freelance psychologists</span> are already using Healmind.",
+                    "<span class='font-semibold'>Over 600 active patients</span> in the app, validating the product."
+                ],
+                usaTitle: "Expansion to the USA 🇺🇸",
+                usaText: "We have created a new entity, <span class='font-semibold'>NewCo</span>, through an exclusive strategic partnership to market the platform in the US market.",
+                usaPropiedad: "Healmind Ownership",
+                usaSocio: "US Strategic Partner"
+            },
+            proyecciones: {
+                title: "Interactive Financial Projections",
+                subtitle: "Our projections are based on a conservative market penetration and an average fee of $80 USD. Use the slider to explore different scenarios.",
+                labelPenetration: "Market Penetration:"
+            },
+            crecimiento: {
+                title: "Annual Financial Growth Plan",
+                subtitle: "This plan details our client and revenue growth goals, providing a clear roadmap for success.",
+                tableHeaders: ["Metric", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5"],
+                tableRowClients: "Total Clients",
+                tableRowRevenue: "Annual Revenue",
+                chartLabelRevenue: "Annual Revenue ($)",
+                chartLabelClients: "Total Clients",
+                chartTitle: "Clients / Revenue"
+            },
+            equipo: {
+                title: "A Winning Team",
+                subtitle: "Healmind has a complete and diverse team, made up of leaders with executive experience, strategic advisors, and key technology partners.",
+                ejecutivo: {
+                    title: "Executive Team",
+                    text: "Leaders with experience in executing the company's vision.",
+                    members: [
+                        { name: "Catalina Ayuso", role: "CEO Founder" },
+                        { name: "Daniela Guardarrama", role: "Marketing" },
+                        { name: "Teo Cuenca", role: "Sales" },
+                        { name: "Diego Arteaga", role: "Customer Relations" }
+                    ]
+                },
+                noEjecutivo: {
+                    title: "Non-Executive Team",
+                    text: "Advisors with strategic market experience and knowledge.",
+                    members: [
+                        { name: "Joaquin Ayuso de Paul", role: "Non Executive Advisor" },
+                        { name: "Joaquin Ayuso Garcia", role: "Non Executive Advisor" },
+                        { name: "Rafael Sarandeses", role: "Non Executive Advisor" }
+                    ]
+                },
+                socios: {
+                    title: "Strategic Partners",
+                    text: "Key alliances that strengthen our technology and expansion.",
+                    members: [
+                        { name: "Socio Tech", role: "Strategic Partner, CTO" },
+                        { name: "US Partner", role: "US Expansion" }
+                    ]
+                },
+                capitalTitle: "Use of Capital",
+                capitalSubtitle: "We are seeking capital to accelerate our expansion and consolidate our technological advantage.",
+                capitalLabels: ['Tech Team for USA', 'AI Sophistication', 'Tech Roadmap', 'Sales in Spain']
+            },
+            footer: {
+                title: "Join the Mental Health Revolution",
+                text: "Healmind is more than a platform; it is the future of clinical psychology.",
+                button: "Contact Us"
+            }
+        }
+    };
+
+    let currentLang = 'es';
+    const langToggleBtn = document.getElementById('language-toggle');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateContent() {
+        const langData = content[currentLang];
+        
+        // Navigation
+        navLinks.forEach((link, index) => {
+            link.textContent = langData.nav[index];
+        });
+
+        // Header
+        const headerTitle = document.querySelector('#header h1');
+        if (headerTitle) headerTitle.textContent = langData.header.title;
+        const headerSubtitle = document.querySelector('#header p');
+        if (headerSubtitle) headerSubtitle.textContent = langData.header.subtitle;
+
+        // Oportunidad section
+        const oportunidadTitle = document.querySelector('#oportunidad .section-title');
+        if (oportunidadTitle) oportunidadTitle.textContent = langData.oportunidad.title;
+        const oportunidadSubtitle = document.querySelector('#oportunidad .section-subtitle');
+        if (oportunidadSubtitle) oportunidadSubtitle.textContent = langData.oportunidad.subtitle;
+        const problemTitle = document.querySelector('#oportunidad h3');
+        if (problemTitle) problemTitle.textContent = langData.oportunidad.problemTitle;
+        const subjetividadTitle = document.querySelector('#oportunidad .stat-card:nth-child(1) h4');
+        if (subjetividadTitle) subjetividadTitle.textContent = langData.oportunidad.subjetividad.title;
+        const subjetividadText = document.querySelector('#oportunidad .stat-card:nth-child(1) p');
+        if (subjetividadText) subjetividadText.textContent = langData.oportunidad.subjetividad.text;
+        const obsoletasTitle = document.querySelector('#oportunidad .stat-card:nth-child(2) h4');
+        if (obsoletasTitle) obsoletasTitle.textContent = langData.oportunidad.obsoletas.title;
+        const obsoletasText = document.querySelector('#oportunidad .stat-card:nth-child(2) p');
+        if (obsoletasText) obsoletasText.textContent = langData.oportunidad.obsoletas.text;
+        const continuidadTitle = document.querySelector('#oportunidad .stat-card:nth-child(3) h4');
+        if (continuidadTitle) continuidadTitle.textContent = langData.oportunidad.continuidad.title;
+        const continuidadText = document.querySelector('#oportunidad .stat-card:nth-child(3) p');
+        if (continuidadText) continuidadText.textContent = langData.oportunidad.continuidad.text;
+        const marketTitle = document.querySelector('#oportunidad .stat-card:nth-child(4) h3');
+        if (marketTitle) marketTitle.textContent = langData.oportunidad.marketTitle;
+        const marketText = document.querySelector('#oportunidad .stat-card:nth-child(4) p');
+        if (marketText) marketText.textContent = langData.oportunidad.marketText;
+        const marketProj = document.querySelector('#oportunidad .stat-card:last-child p:last-child');
+        if (marketProj) marketProj.textContent = langData.oportunidad.marketProj;
+
+        // Solucion section
+        const solucionTitle = document.querySelector('#solucion .section-title');
+        if (solucionTitle) solucionTitle.textContent = langData.solucion.title;
+        const solucionSubtitle = document.querySelector('#solucion .section-subtitle');
+        if (solucionSubtitle) solucionSubtitle.textContent = langData.solucion.subtitle;
+        const evaluacionTitle = document.querySelector('#solucion .stat-card:nth-child(1) h3');
+        if (evaluacionTitle) evaluacionTitle.textContent = langData.solucion.evaluacion.title;
+        const evaluacionText = document.querySelector('#solucion .stat-card:nth-child(1) p');
+        if (evaluacionText) evaluacionText.textContent = langData.solucion.evaluacion.text;
+        const analisisTitle = document.querySelector('#solucion .stat-card:nth-child(2) h3');
+        if (analisisTitle) analisisTitle.textContent = langData.solucion.analisis.title;
+        const analisisText = document.querySelector('#solucion .stat-card:nth-child(2) p');
+        if (analisisText) analisisText.textContent = langData.solucion.analisis.text;
+        const visionTitle = document.querySelector('#solucion .stat-card:nth-child(3) h3');
+        if (visionTitle) visionTitle.textContent = langData.solucion.vision.title;
+        const visionText = document.querySelector('#solucion .stat-card:nth-child(3) p');
+        if (visionText) visionText.textContent = langData.solucion.vision.text;
+
+        // Modelo section
+        const modeloTitle = document.querySelector('#modelo .section-title');
+        if (modeloTitle) modeloTitle.textContent = langData.modelo.title;
+        const modeloSubtitle = document.querySelector('#modelo .section-subtitle');
+        if (modeloSubtitle) modeloSubtitle.textContent = langData.modelo.subtitle;
+        const suscripcionTitle = document.querySelector('#modelo .stat-card:nth-child(1) h3');
+        if (suscripcionTitle) suscripcionTitle.textContent = langData.modelo.suscripcion.title;
+        const suscripcionText = document.querySelector('#modelo .stat-card:nth-child(1) p');
+        if (suscripcionText) suscripcionText.textContent = langData.modelo.suscripcion.text;
+        const ahorroTitle = document.querySelector('#modelo .stat-card:nth-child(2) h3');
+        if (ahorroTitle) ahorroTitle.textContent = langData.modelo.ahorro.title;
+        const ahorroText = document.querySelector('#modelo .stat-card:nth-child(2) p');
+        if (ahorroText) ahorroText.innerHTML = langData.modelo.ahorro.text;
+        const calculadoraTitle = document.querySelector('#modelo .stat-card:nth-child(3) h3');
+        if (calculadoraTitle) calculadoraTitle.textContent = langData.modelo.calculadoraTitle;
+        const calculadoraText = document.querySelector('#modelo .stat-card:nth-child(3) .text-gray-600');
+        if (calculadoraText) calculadoraText.textContent = langData.modelo.calculadoraText;
+        const labelTherapists = document.querySelector('#modelo .stat-card:nth-child(3) label');
+        if (labelTherapists) labelTherapists.textContent = langData.modelo.labelTherapists;
+        const labelSavings = document.querySelector('#modelo .stat-card:nth-child(3) p:nth-child(3)');
+        if (labelSavings) labelSavings.textContent = langData.modelo.labelSavings;
+        const labelROI = document.querySelector('#modelo .stat-card:nth-child(3) p:last-child');
+        if (labelROI) labelROI.textContent = langData.modelo.labelROI;
+
+        // Traccion section
+        const traccionTitle = document.querySelector('#traccion .section-title');
+        if (traccionTitle) traccionTitle.textContent = langData.traccion.title;
+        const traccionSubtitle = document.querySelector('#traccion .section-subtitle');
+        if (traccionSubtitle) traccionSubtitle.textContent = langData.traccion.subtitle;
+        const espaniaTitle = document.querySelector('#traccion .stat-card:nth-child(1) h3');
+        if (espaniaTitle) espaniaTitle.textContent = langData.traccion.espaniaTitle;
+        const espaniaList = document.querySelector('#traccion .stat-card:nth-child(1) ul');
+        if (espaniaList) {
+            espaniaList.innerHTML = '';
+            langData.traccion.espaniaList.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = item;
+                espaniaList.appendChild(li);
+            });
+        }
+        const usaTitle = document.querySelector('#traccion .stat-card:nth-child(2) h3');
+        if (usaTitle) usaTitle.textContent = langData.traccion.usaTitle;
+        const usaText = document.querySelector('#traccion .stat-card:nth-child(2) p:first-of-type');
+        if (usaText) usaText.innerHTML = langData.traccion.usaText;
+        const usaPropiedad = document.querySelector('#traccion .stat-card:nth-child(2) .text-sm:nth-child(2)');
+        if (usaPropiedad) usaPropiedad.textContent = langData.traccion.usaPropiedad;
+        const usaSocio = document.querySelector('#traccion .stat-card:nth-child(2) .text-sm:last-child');
+        if (usaSocio) usaSocio.textContent = langData.traccion.usaSocio;
+
+        // Proyecciones section
+        const proyeccionesTitle = document.querySelector('#proyecciones .section-title');
+        if (proyeccionesTitle) proyeccionesTitle.textContent = langData.proyecciones.title;
+        const proyeccionesSubtitle = document.querySelector('#proyecciones .section-subtitle');
+        if (proyeccionesSubtitle) proyeccionesSubtitle.textContent = langData.proyecciones.subtitle;
+        const labelPenetration = document.querySelector('#proyecciones label');
+        if (labelPenetration) labelPenetration.textContent = langData.proyecciones.labelPenetration;
+
+        // Crecimiento section
+        const crecimientoTitle = document.querySelector('#plan-crecimiento .section-title');
+        if (crecimientoTitle) crecimientoTitle.textContent = langData.crecimiento.title;
+        const crecimientoSubtitle = document.querySelector('#plan-crecimiento .section-subtitle');
+        if (crecimientoSubtitle) crecimientoSubtitle.textContent = langData.crecimiento.subtitle;
+        const clientsRowHeader = document.querySelector('#financialsTableBody tr:first-child td:first-child');
+        if (clientsRowHeader) clientsRowHeader.textContent = langData.crecimiento.tableRowClients;
+        const revenueRowHeader = document.querySelector('#financialsTableBody tr:last-child td:first-child');
+        if (revenueRowHeader) revenueRowHeader.textContent = langData.crecimiento.tableRowRevenue;
+        
+        // Equipo section
+        const equipoTitle = document.querySelector('#equipo .section-title');
+        if (equipoTitle) equipoTitle.textContent = langData.equipo.title;
+        const equipoSubtitle = document.querySelector('#equipo .section-subtitle');
+        if (equipoSubtitle) equipoSubtitle.textContent = langData.equipo.subtitle;
+        const ejecutivoTitle = document.querySelector('#equipo .stat-card:nth-child(1) h3');
+        if (ejecutivoTitle) ejecutivoTitle.textContent = langData.equipo.ejecutivo.title;
+        const ejecutivoText = document.querySelector('#equipo .stat-card:nth-child(1) p');
+        if (ejecutivoText) ejecutivoText.textContent = langData.equipo.ejecutivo.text;
+        const noEjecutivoTitle = document.querySelector('#equipo .stat-card:nth-child(2) h3');
+        if (noEjecutivoTitle) noEjecutivoTitle.textContent = langData.equipo.noEjecutivo.title;
+        const noEjecutivoText = document.querySelector('#equipo .stat-card:nth-child(2) p');
+        if (noEjecutivoText) noEjecutivoText.textContent = langData.equipo.noEjecutivo.text;
+        const sociosTitle = document.querySelector('#equipo .stat-card:nth-child(3) h3');
+        if (sociosTitle) sociosTitle.textContent = langData.equipo.socios.title;
+        const sociosText = document.querySelector('#equipo .stat-card:nth-child(3) p');
+        if (sociosText) sociosText.textContent = langData.equipo.socios.text;
+        const capitalTitle = document.querySelector('#equipo .mt-16 h3');
+        if (capitalTitle) capitalTitle.textContent = langData.equipo.capitalTitle;
+        const capitalSubtitle = document.querySelector('#equipo .mt-16 p');
+        if (capitalSubtitle) capitalSubtitle.textContent = langData.equipo.capitalSubtitle;
+
+        // Footer
+        const footerTitle = document.querySelector('footer h2');
+        if (footerTitle) footerTitle.textContent = langData.footer.title;
+        const footerText = document.querySelector('footer p');
+        if (footerText) footerText.textContent = langData.footer.text;
+        const footerButton = document.querySelector('footer a');
+        if (footerButton) footerButton.textContent = langData.footer.button;
+
+        // Update Charts
+        if(growthChart) {
+            growthChart.data.datasets[0].label = langData.crecimiento.chartLabelRevenue;
+            growthChart.data.datasets[1].label = langData.crecimiento.chartLabelClients;
+            growthChart.options.scales.y.title.text = langData.crecimiento.chartTitle;
+            growthChart.update();
+        }
+
+        if(marketChart) {
+            marketChart.data.labels = langData.oportunidad.marketChartLabels;
+            marketChart.data.datasets[0].label = 'Nº de Profesionales';
+            marketChart.update();
+        }
+
+        if(capitalUseChart) {
+            capitalUseChart.data.labels = langData.equipo.capitalLabels;
+            capitalUseChart.update();
+        }
+    }
+
+    langToggleBtn.addEventListener('click', () => {
+        if (currentLang === 'es') {
+            currentLang = 'en';
+            langToggleBtn.textContent = 'ES';
+            document.documentElement.lang = 'en';
+        } else {
+            currentLang = 'es';
+            langToggleBtn.textContent = 'EN';
+            document.documentElement.lang = 'es';
+        }
+        updateContent();
+    });
+
+
+    const marketData = {
+        labels: content.es.oportunidad.marketChartLabels,
+        datasets: [{
+            label: 'Nº de Profesionales en EE.UU.',
+            data: [60000, 196000, 351000],
+            backgroundColor: [
+                'rgba(167, 139, 250, 0.6)',
+                'rgba(139, 92, 246, 0.6)',
+                'rgba(109, 40, 217, 0.6)'
+            ],
+            borderColor: [
+                'rgba(167, 139, 250, 1)',
+                'rgba(139, 92, 246, 1)',
+                'rgba(109, 40, 217, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    const marketChartCtx = document.getElementById('marketChart').getContext('2d');
+    const marketChart = new Chart(marketChartCtx, {
+        type: 'bar',
+        data: marketData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                       callback: function(value) {
+                           return value / 1000 + 'k';
+                       }
+                    }
+                }
+            }
+        }
+    });
+
+    const capitalUseData = {
+        labels: content.es.equipo.capitalLabels,
+        datasets: [{
+            data: [40, 30, 20, 10],
+            backgroundColor: [
+                'rgba(139, 92, 246, 0.8)',
+                'rgba(167, 139, 250, 0.8)',
+                'rgba(196, 181, 253, 0.8)',
+                'rgba(221, 214, 254, 0.8)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+    const capitalUseCtx = document.getElementById('capitalUseChart').getContext('2d');
+    const capitalUseChart = new Chart(capitalUseCtx, {
+        type: 'doughnut',
+        data: capitalUseData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+
+    const therapistsInput = document.getElementById('therapists');
+    const roiResult = document.getElementById('roiResult');
+    const monthlySavingPerTherapist = 2850;
+    
+    function updateROI() {
+        const numTherapists = parseInt(therapistsInput.value) || 0;
+        const totalSavings = numTherapists * monthlySavingPerTherapist;
+        if (roiResult) roiResult.textContent = `$${totalSavings.toLocaleString()}`;
+    }
+    therapistsInput.addEventListener('input', updateROI);
+    updateROI();
+
+    const penetrationSlider = document.getElementById('penetration');
+    const penetrationValue = document.getElementById('penetrationValue');
+    const financialsChartCtx = document.getElementById('financialsChart').getContext('2d');
+    let financialsChart;
+    const totalTherapistsTarget = 120000 / 0.15;
+    const avgFee = 80;
+
+    function updateFinancials() {
+        const penetration = parseInt(penetrationSlider.value);
+        if (penetrationValue) penetrationValue.textContent = penetration;
+        
+        const therapistsCount = totalTherapistsTarget * (penetration / 100);
+        const monthlyRevenue = therapistsCount * avgFee;
+        const annualRevenue = monthlyRevenue * 12;
+
+        const data = {
+            labels: ['Ingresos Mensuales', 'Ingresos Anuales'],
+            datasets: [{
+                label: 'Ingresos en USD',
+                data: [monthlyRevenue, annualRevenue],
+                backgroundColor: ['rgba(139, 92, 246, 0.6)', 'rgba(109, 40, 217, 0.6)'],
+                borderColor: ['rgba(139, 92, 246, 1)', 'rgba(109, 40, 217, 1)'],
+                borderWidth: 1
+            }]
+        };
+
+        if (financialsChart) {
+            financialsChart.data = data;
+            financialsChart.update();
+        } else {
+            financialsChart = new Chart(financialsChartCtx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return `$${value / 1000000}M`;
+                                    if (value >= 1000) return `$${value / 1000}k`;
+                                    return `$${value}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    if (penetrationSlider) penetrationSlider.addEventListener('input', updateFinancials);
+    updateFinancials();
+
+    const yearlyData = [
+        { year: 1, clients: 160, revenue: 153600 },
+        { year: 2, clients: 494, revenue: 474240 },
+        { year: 3, clients: 1215, revenue: 1166400 },
+        { year: 4, clients: 2269, revenue: 2178240 },
+        { year: 5, clients: 3778, revenue: 3626880 }
+    ];
+
+    const tableBody = document.getElementById('financialsTableBody');
+    
+    function updateTableContent() {
+        if (!tableBody) return;
+        tableBody.innerHTML = '';
+        
+        const clientsRow = document.createElement('tr');
+        clientsRow.innerHTML = `<td class="p-4 font-semibold">${content[currentLang].crecimiento.tableRowClients}</td>`;
+        yearlyData.forEach(data => {
+            clientsRow.innerHTML += `<td class="p-4 text-center">${data.clients.toLocaleString()}</td>`;
+        });
+        tableBody.appendChild(clientsRow);
+
+        const revenueRow = document.createElement('tr');
+        revenueRow.innerHTML = `<td class="p-4 font-semibold">${content[currentLang].crecimiento.tableRowRevenue}</td>`;
+        yearlyData.forEach(data => {
+            revenueRow.innerHTML += `<td class="p-4 text-center">$${data.revenue.toLocaleString()}</td>`;
+        });
+        tableBody.appendChild(revenueRow);
+    }
+
+    let growthChart;
+    const growthChartCtx = document.getElementById('growthChart').getContext('2d');
+    
+    function createGrowthChart() {
+        if (growthChart) growthChart.destroy();
+        growthChart = new Chart(growthChartCtx, {
+            type: 'line',
+            data: {
+                labels: yearlyData.map(d => `Año ${d.year}`),
+                datasets: [
+                    {
+                        label: content[currentLang].crecimiento.chartLabelRevenue,
+                        data: yearlyData.map(d => d.revenue),
+                        borderColor: 'rgba(109, 40, 217, 1)',
+                        backgroundColor: 'rgba(109, 40, 217, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: content[currentLang].crecimiento.chartLabelClients,
+                        data: yearlyData.map(d => d.clients),
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                         callbacks: {
+                             label: function(context) {
+                                 if (context.datasetIndex === 0) {
+                                     return `${content[currentLang].crecimiento.chartLabelRevenue}: $${context.parsed.y.toLocaleString()}`;
+                                 } else {
+                                     return `${content[currentLang].crecimiento.chartLabelClients}: ${context.parsed.y.toLocaleString()}`;
+                                 }
+                             }
+                         }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: content[currentLang].crecimiento.chartTitle
+                        },
+                         ticks: {
+                            callback: function(value) {
+                                 if (value >= 1000000) return `$${value / 1000000}M`;
+                                 if (value >= 1000) return `$${value / 1000}k`;
+                                 return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+    sections.forEach(section => observer.observe(section));
+    
+    updateTableContent();
+    createGrowthChart();
+    updateContent();
+
+});
+</script>
+</body>
+</html>
